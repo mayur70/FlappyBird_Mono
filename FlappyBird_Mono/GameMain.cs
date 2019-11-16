@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace FlappyBird_Mono
 {
@@ -18,12 +19,15 @@ namespace FlappyBird_Mono
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public static Random random = new Random();
 
         private Texture2D background;
         private float backgroundScroll = 0f;
         
         private Texture2D ground;
         private float groundScroll = 0f;
+
+        private Texture2D pipe;
 
         private const int BACKGROUND_SCROLL_SPEED = 30;
         private const int GROUND_SCROLL_SPEED = 60;
@@ -33,6 +37,10 @@ namespace FlappyBird_Mono
         public static IInputHandler input;
 
         private Bird bird;
+
+        private List<Pipe> pipes;
+
+        private float spawnTimer = 0f;
 
         public GameMain()
         {
@@ -60,6 +68,9 @@ namespace FlappyBird_Mono
             
             Window.Title = "Flappy Bird";
 
+            spawnTimer = 0f;
+            pipes = new List<Pipe>();
+
             base.Initialize();
         }
 
@@ -70,6 +81,7 @@ namespace FlappyBird_Mono
             
             background = Content.Load<Texture2D>("background");
             ground = Content.Load<Texture2D>("ground");
+            pipe = Content.Load<Texture2D>("pipe");
 
 
             bird = new Bird(Content.Load<Texture2D>("bird"));
@@ -91,9 +103,29 @@ namespace FlappyBird_Mono
             backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * delta) % BACKGROUND_LOOPING_POINT;
             groundScroll = (groundScroll + GROUND_SCROLL_SPEED * delta) % VIRTUAL_WIDTH;
 
+            spawnTimer += delta;
+            if (spawnTimer > 2)
+            {
+                spawnTimer = 0;
+                pipes.Add(new Pipe(pipe));
+            }
 
             bird.Update(delta);
-        
+
+            List<Pipe> pipesToRemove = new List<Pipe>();
+            foreach (Pipe pipe in pipes)
+            {
+                pipe.Update(delta);
+                if (pipe.X < -pipe.Width)
+                {
+                    pipesToRemove.Add(pipe);
+                }
+            }
+            foreach (Pipe pipe in pipesToRemove)
+            {
+                pipes.Remove(pipe);
+            }
+
             base.Update(gameTime);
         }
 
@@ -112,6 +144,12 @@ namespace FlappyBird_Mono
                 Resolution.getTransformationMatrix());
 
             spriteBatch.Draw(background, new Vector2(-backgroundScroll, 0), Color.White);
+
+            foreach (Pipe pipe in pipes)
+            {
+                pipe.Draw(spriteBatch);
+            }
+
             spriteBatch.Draw(ground, new Vector2(-groundScroll, VIRTUAL_HEIGHT - 16), Color.White);
 
             bird.Draw(spriteBatch);

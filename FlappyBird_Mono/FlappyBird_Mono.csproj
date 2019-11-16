@@ -44,9 +44,11 @@
     <Compile Include="Bird.cs" />
     <Compile Include="GameMain.cs" />
     <Compile Include="InputHandler.cs" />
+    <Compile Include="Pipe.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolution.cs" />
+    <Compile Include="Texture2DPIPE_IMAGE.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
