@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace FlappyBird_Mono
 {
@@ -7,6 +8,7 @@ namespace FlappyBird_Mono
     {
 
         private const int GRAVITY = 20;
+        private const int JUMP_HEIGHT = -5;
 
         private Texture2D image;
         private float width;
@@ -30,6 +32,11 @@ namespace FlappyBird_Mono
         public void Update(float delta)
         {
             dy += GRAVITY * delta;
+            if (GameMain.input.WasPressed(Keys.Space))
+            {
+                dy = JUMP_HEIGHT;
+            }
+
             y += dy;
         }
 

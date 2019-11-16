@@ -8,13 +8,15 @@ namespace InputManager
 
         KeyboardState KeyboardState { get; }
         GamePadState GamePadState { get; }
+
+        bool WasPressed(Keys space);
     }
 
     public class InputHandler : GameComponent, IInputHandler
     {
 
-        private KeyboardState keyboardState;
-        private GamePadState gamepadState;
+        private static KeyboardState keyboardState;
+        private static GamePadState gamepadState;
         public KeyboardState KeyboardState => keyboardState;
         public GamePadState GamePadState => gamepadState;
 
@@ -29,6 +31,11 @@ namespace InputManager
             gamepadState = GamePad.GetState(PlayerIndex.One);
 
             base.Update(gameTime);
+        }
+
+        public bool WasPressed(Keys key)
+        {
+            return keyboardState.IsKeyDown(key);
         }
     }
 }

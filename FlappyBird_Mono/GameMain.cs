@@ -30,7 +30,7 @@ namespace FlappyBird_Mono
 
         private const int BACKGROUND_LOOPING_POINT = 413;
 
-        private IInputHandler input;
+        public static IInputHandler input;
 
         private Bird bird;
 
