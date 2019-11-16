@@ -3,7 +3,6 @@ using InputManager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using ScalingClever;
 using System;
 
 namespace FlappyBird_Mono
@@ -91,6 +90,9 @@ namespace FlappyBird_Mono
 
             backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * delta) % BACKGROUND_LOOPING_POINT;
             groundScroll = (groundScroll + GROUND_SCROLL_SPEED * delta) % VIRTUAL_WIDTH;
+
+
+            bird.Update(delta);
         
             base.Update(gameTime);
         }
