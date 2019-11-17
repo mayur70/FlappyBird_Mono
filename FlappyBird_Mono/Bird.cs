@@ -15,16 +15,16 @@ namespace FlappyBird_Mono
         private float y;
         private float dy;
 
+        public float X { get { return x; } }
+        public float Y { get { return y; } }
+
         public Bird(Texture2D image)
         {
             this.image = image;
             width = this.image.Width;
             height = this.image.Height;
 
-            x = GameMain.VIRTUAL_WIDTH / 2 - width / 2;
-            y = GameMain.VIRTUAL_HEIGHT / 2 - height / 2;
-
-            dy = 0f;
+            Reset();
         }
 
         public void Update(float delta)
@@ -53,6 +53,13 @@ namespace FlappyBird_Mono
                 }
             }
             return false;
+        }
+        public void Reset()
+        {
+            x = GameMain.VIRTUAL_WIDTH / 2 - width / 2;
+            y = GameMain.VIRTUAL_HEIGHT / 2 - height / 2;
+
+            dy = 0f;
         }
     }
 }

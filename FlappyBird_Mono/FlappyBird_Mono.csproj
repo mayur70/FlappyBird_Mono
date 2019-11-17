@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="Bird.cs" />
     <Compile Include="GameMain.cs" />
+    <Compile Include="GameStates\CountdownState.cs" />
     <Compile Include="GameStates\PlayState.cs" />
+    <Compile Include="GameStates\ScoreState.cs" />
     <Compile Include="GameStates\TitleScreenState.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Pipe.cs" />

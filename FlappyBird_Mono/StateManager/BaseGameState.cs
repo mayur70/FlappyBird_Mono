@@ -27,5 +27,10 @@ namespace StateManager
         {
             base.LoadContent();
         }
+
+        public virtual void Reset()
+        {
+
+        }
     }
 }

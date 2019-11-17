@@ -23,6 +23,8 @@ namespace FlappyBird_Mono
         private GameStateManager gameStateManager;
         public ITitleScreenState TitleScreenState { get; }
         public IPlayState PlayState { get; }
+        public IScoreState ScoreState { get; }
+        public ICountdownState CountdownState { get; }
 
         public SpriteBatch SpriteBatch { get { return spriteBatch; } }
 
@@ -52,6 +54,8 @@ namespace FlappyBird_Mono
 
             TitleScreenState = new TitleScreenState(this);
             PlayState = new PlayState(this);
+            ScoreState = new ScoreState(this);
+            CountdownState = new CountdownState(this);
             gameStateManager.ChangeState((TitleScreenState)TitleScreenState);
 
             Components.Add(new InputHandler(this));

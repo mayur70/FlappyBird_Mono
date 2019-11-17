@@ -26,17 +26,16 @@ namespace FlappyBird_Mono.GameStates
 
         private List<PipePair> pipePairs;
 
-        private float lastY = -PIPE_HEIGHT + random.Next(80) + 20;
+        private float lastY;
 
-        private float spawnTimer = 0f;
+        private float spawnTimer;
 
-        private bool scrolling = true;
+        private int score;
 
 
         public static SpriteFont smallFont;
         public static SpriteFont mediumFont;
         public static SpriteFont flappyFont;
-        public static SpriteFont hugeFont;
 
 
         public PlayState(Game game) : base(game)
@@ -46,24 +45,19 @@ namespace FlappyBird_Mono.GameStates
 
         public override void Initialize()
         {
-
-            spawnTimer = 0f;
-            pipePairs = new List<PipePair>();
-
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
+            pipePairs = new List<PipePair>();
             pipe = Game.Content.Load<Texture2D>("pipe");
-
             bird = new Bird(Game.Content.Load<Texture2D>("bird"));
-
             smallFont = Game.Content.Load<SpriteFont>("smallFont");
             mediumFont = Game.Content.Load<SpriteFont>("mediumFont");
             flappyFont = Game.Content.Load<SpriteFont>("flappyFont");
-            hugeFont = Game.Content.Load<SpriteFont>("hugeFont");
-
+            
+            Reset();
             base.LoadContent();
         }
 
@@ -88,13 +82,19 @@ namespace FlappyBird_Mono.GameStates
             {
                 pipePair.Update(delta);
 
-                if (bird.Collides(pipePair.Upper))
+                if (!pipePair.scored)
                 {
-                    manager.ChangeState((TitleScreenState)GameRef.TitleScreenState);
+                    if(pipePair.X + PIPE_WIDTH < bird.X)
+                    {
+                        score++;
+                        pipePair.scored = true;
+                    }
                 }
-                if (bird.Collides(pipePair.Lower))
+
+
+                if (bird.Collides(pipePair.Upper) || bird.Collides(pipePair.Lower))
                 {
-                    manager.ChangeState((TitleScreenState)GameRef.TitleScreenState);
+                    LoadScoreState();
                 }
 
                 if (pipePair.remove)
@@ -107,6 +107,11 @@ namespace FlappyBird_Mono.GameStates
                 pipePairs.Remove(pipePair);
             }
 
+            if(bird.Y > GameMain.VIRTUAL_HEIGHT - 15)
+            {
+                LoadScoreState();
+            }
+
             base.Update(gameTime);
         }
 
@@ -117,11 +122,30 @@ namespace FlappyBird_Mono.GameStates
             {
                 pipePair.Draw(GameRef.SpriteBatch);
             }
+            string scoreMsg = "Score: " + score;
+            GameRef.SpriteBatch.DrawString(flappyFont, scoreMsg, new Vector2(8, 8), Color.White);
 
             bird.Draw(GameRef.SpriteBatch);
 
-
             base.Draw(gameTime);
+        }
+
+        private void LoadScoreState()
+        {
+            ScoreState scoreState = (ScoreState)GameRef.ScoreState;
+            scoreState.Score = score;
+            manager.ChangeState(scoreState);
+        }
+
+        public override void Reset()
+        {
+            if(bird != null)
+                bird.Reset();
+            if (pipePairs != null)
+                pipePairs.Clear();
+            spawnTimer = 0f;
+            score = 0;
+            lastY = -PIPE_HEIGHT + random.Next(80) + 20;
         }
 
         protected override void UnloadContent()

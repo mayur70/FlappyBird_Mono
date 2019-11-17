@@ -8,15 +8,19 @@ namespace FlappyBird_Mono
         private float x;
         private float y;
         public bool remove;
+        public bool scored;
 
         public Pipe Upper { get; }
         public Pipe Lower { get; }
+        public float X { get { return x; } }
 
         public PipePair(float y)
         {
             x = GameMain.VIRTUAL_WIDTH + 32;
             this.y = y;
             remove = false;
+
+            scored = false;
 
             Upper = new Pipe(PipeOrientation.Top, this.y);
             Lower = new Pipe(PipeOrientation.Bottom, this.y + PlayState.PIPE_HEIGHT + PlayState.GAP_HEIGHT);
