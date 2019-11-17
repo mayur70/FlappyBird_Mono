@@ -1,4 +1,5 @@
 ﻿using System;
+using Shared;
 
 namespace FlappyBird_Mono
 {
@@ -14,8 +15,10 @@ namespace FlappyBird_Mono
         [STAThread]
         static void Main()
         {
-            using (var game = new GameMain())
+            using (GameMain game = new GameMain())
+            {
                 game.Run();
+            }
         }
     }
 #endif

@@ -1,7 +1,7 @@
-﻿using FlappyBird_Mono.GameStates;
+﻿using Shared.GameStates;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace FlappyBird_Mono
+namespace Shared
 {
     public class PipePair
     {

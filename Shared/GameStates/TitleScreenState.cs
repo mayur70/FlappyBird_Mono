@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StateManager;
 
-namespace FlappyBird_Mono.GameStates
+namespace Shared.GameStates
 {
     public interface ITitleScreenState: IGameState
     {
@@ -31,7 +31,7 @@ namespace FlappyBird_Mono.GameStates
 
         public override void Update(GameTime gameTime)
         {
-            if (InputHandler.IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Enter))
+            if (InputHandler.IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Enter) || InputHandler.IsScreenTouched())
             {
                 CountdownState countdownState = (CountdownState)GameRef.CountdownState;
                 countdownState.Reset();

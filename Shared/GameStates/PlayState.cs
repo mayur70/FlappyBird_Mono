@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StateManager;
 using System.Collections.Generic;
 
-namespace FlappyBird_Mono.GameStates
+namespace Shared.GameStates
 {
     public interface IPlayState : IGameState
     {

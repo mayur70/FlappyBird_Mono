@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using StateManager;
 
-namespace FlappyBird_Mono.GameStates
+namespace Shared.GameStates
 {
     public interface ICountdownState : IGameState
     {

@@ -1,4 +1,4 @@
-﻿using FlappyBird_Mono.GameStates;
+﻿using Shared.GameStates;
 using IndependentResolutionRendering;
 using InputManager;
 using Microsoft.Xna.Framework;
@@ -8,13 +8,11 @@ using Microsoft.Xna.Framework.Media;
 using StateManager;
 using System;
 
-namespace FlappyBird_Mono
+namespace Shared
 {
     public class GameMain : Game
     {
-        private const int WINDOW_WIDTH = 1280;
-        private const int WINDOW_HEIGHT = 720;
-
+        
         public const int VIRTUAL_WIDTH = 512;
         public const int VIRTUAL_HEIGHT = 288;
 
@@ -47,10 +45,13 @@ namespace FlappyBird_Mono
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
+            Window.AllowUserResizing = false;
+            graphics.IsFullScreen = true;
             Resolution.Init(ref graphics);
             Resolution.SetVirtualResolution(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-            Resolution.SetResolution(WINDOW_WIDTH, WINDOW_HEIGHT, false);
+            
+            Resolution.SetResolution(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
+                GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, true);
 
             gameStateManager = new GameStateManager(this);
             Components.Add(gameStateManager);
@@ -68,9 +69,8 @@ namespace FlappyBird_Mono
 
         protected override void Initialize()
         {
-            Window.AllowUserResizing = true;
-            graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
-            graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             
             Window.Title = "Flappy Bird";
 

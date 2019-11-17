@@ -1,11 +1,11 @@
-﻿using FlappyBird_Mono.GameStates;
+﻿using Shared.GameStates;
 using InputManager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace FlappyBird_Mono
+namespace Shared
 {
     public class Bird
     {
@@ -33,7 +33,7 @@ namespace FlappyBird_Mono
         public void Update(float delta)
         {
             dy += PlayState.GRAVITY * delta;
-            if (InputHandler.IsKeyJustPressed(Keys.Space))
+            if (InputHandler.IsKeyJustPressed(Keys.Space) || InputHandler.IsScreenTouched())
             {
                 jumpSound.Play();
                 dy = PlayState.JUMP_HEIGHT;
