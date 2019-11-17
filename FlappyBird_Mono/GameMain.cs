@@ -22,7 +22,7 @@ namespace FlappyBird_Mono
         public const int PIPE_SPEED = 60;
 
         public const int GRAVITY = 20;
-        public const int JUMP_HEIGHT = -4;
+        public const int JUMP_HEIGHT = -3;
 
         private const int BACKGROUND_SCROLL_SPEED = 30;
         private const int GROUND_SCROLL_SPEED = 60;
@@ -51,6 +51,8 @@ namespace FlappyBird_Mono
         private float lastY = -PIPE_HEIGHT + random.Next(80) + 20;
 
         private float spawnTimer = 0f;
+
+        private bool scrolling = true;
 
         public GameMain()
         {
@@ -107,37 +109,49 @@ namespace FlappyBird_Mono
             if (input.GamePadState.Buttons.Back == ButtonState.Pressed || input.KeyboardState.IsKeyDown(Keys.Escape))
                 Exit();
 
-            float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * delta) % BACKGROUND_LOOPING_POINT;
-            groundScroll = (groundScroll + GROUND_SCROLL_SPEED * delta) % VIRTUAL_WIDTH;
-
-            spawnTimer += delta;
-            if (spawnTimer > 2)
+            if (scrolling)
             {
-                float y = MathHelper.Max(-PIPE_HEIGHT + 10,
-                        MathHelper.Min(lastY + random.Next(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT));
-                lastY = y;
-                spawnTimer = 0;
-                pipePairs.Add(new PipePair(y));
-            }
+                float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            bird.Update(delta);
+                backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * delta) % BACKGROUND_LOOPING_POINT;
+                groundScroll = (groundScroll + GROUND_SCROLL_SPEED * delta) % VIRTUAL_WIDTH;
 
-            List<PipePair> pipePairsToRemove = new List<PipePair>();
-            foreach (PipePair pipePair in pipePairs)
-            {
-                pipePair.Update(delta);
-                if (pipePair.remove)
+                spawnTimer += delta;
+                if (spawnTimer > 2)
                 {
-                    pipePairsToRemove.Add(pipePair);
+                    float y = MathHelper.Max(-PIPE_HEIGHT + 10,
+                            MathHelper.Min(lastY + random.Next(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT));
+                    lastY = y;
+                    spawnTimer = 0;
+                    pipePairs.Add(new PipePair(y));
+                }
+
+                bird.Update(delta);
+
+                List<PipePair> pipePairsToRemove = new List<PipePair>();
+                foreach (PipePair pipePair in pipePairs)
+                {
+                    pipePair.Update(delta);
+
+                    if (bird.Collides(pipePair.Upper)) 
+                    {
+                        scrolling = false;
+                    }
+                    if (bird.Collides(pipePair.Lower))
+                    {
+                        scrolling = false;
+                    }
+
+                    if (pipePair.remove)
+                    {
+                        pipePairsToRemove.Add(pipePair);
+                    }
+                }
+                foreach (PipePair pipePair in pipePairsToRemove)
+                {
+                    pipePairs.Remove(pipePair);
                 }
             }
-            foreach (PipePair pipePair in pipePairsToRemove)
-            {
-                pipePairs.Remove(pipePair);
-            }
-
             base.Update(gameTime);
         }
 

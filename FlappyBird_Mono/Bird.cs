@@ -40,5 +40,17 @@ namespace FlappyBird_Mono
         {
             spriteBatch.Draw(image, new Vector2(x, y), Color.White);
         }
+
+        public bool Collides(Pipe pipe)
+        {
+            if ((x + 2 + width - 4) >= pipe.X && x + 2 <= pipe.X + GameMain.PIPE_WIDTH)
+            {
+                if ((y + 2 + height - 4) >= pipe.Y && y + 2 <= pipe.Y + GameMain.PIPE_HEIGHT)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

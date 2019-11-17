@@ -7,8 +7,9 @@ namespace FlappyBird_Mono
         private float x;
         private float y;
         public bool remove;
-        private Pipe upper;
-        private Pipe lower;
+
+        public Pipe Upper { get; }
+        public Pipe Lower { get; }
 
         public PipePair(float y)
         {
@@ -16,8 +17,8 @@ namespace FlappyBird_Mono
             this.y = y;
             remove = false;
 
-            upper = new Pipe(PipeOrientation.Top, this.y);
-            lower = new Pipe(PipeOrientation.Bottom, this.y + GameMain.PIPE_HEIGHT + GameMain.GAP_HEIGHT);
+            Upper = new Pipe(PipeOrientation.Top, this.y);
+            Lower = new Pipe(PipeOrientation.Bottom, this.y + GameMain.PIPE_HEIGHT + GameMain.GAP_HEIGHT);
         }
 
         public void Update(float delta)
@@ -25,8 +26,8 @@ namespace FlappyBird_Mono
             if (x > -GameMain.PIPE_WIDTH)
             {
                 x -= GameMain.PIPE_SPEED * delta;
-                upper.X = x;
-                lower.X = x;
+                Upper.X = x;
+                Lower.X = x;
             }
             else
             {
@@ -36,8 +37,8 @@ namespace FlappyBird_Mono
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            upper.Draw(spriteBatch);
-            lower.Draw(spriteBatch);
+            Upper.Draw(spriteBatch);
+            Lower.Draw(spriteBatch);
         }
     }
 }
