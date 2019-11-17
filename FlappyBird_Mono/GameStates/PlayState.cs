@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using StateManager;
 using System.Collections.Generic;
@@ -37,6 +38,11 @@ namespace FlappyBird_Mono.GameStates
         public static SpriteFont mediumFont;
         public static SpriteFont flappyFont;
 
+        private static SoundEffect jumpSound;
+        private static SoundEffect explosionSound;
+        private static SoundEffect hurtSound;
+        private static SoundEffect scoreSound;
+
 
         public PlayState(Game game) : base(game)
         {
@@ -51,12 +57,18 @@ namespace FlappyBird_Mono.GameStates
         protected override void LoadContent()
         {
             pipePairs = new List<PipePair>();
+
+            jumpSound = Game.Content.Load<SoundEffect>("jump");
+            explosionSound = Game.Content.Load<SoundEffect>("explosion");
+            hurtSound = Game.Content.Load<SoundEffect>("hurt");
+            scoreSound = Game.Content.Load<SoundEffect>("score");
+            
             pipe = Game.Content.Load<Texture2D>("pipe");
-            bird = new Bird(Game.Content.Load<Texture2D>("bird"));
             smallFont = Game.Content.Load<SpriteFont>("smallFont");
             mediumFont = Game.Content.Load<SpriteFont>("mediumFont");
             flappyFont = Game.Content.Load<SpriteFont>("flappyFont");
-            
+            bird = new Bird(Game.Content.Load<Texture2D>("bird"), jumpSound);
+
             Reset();
             base.LoadContent();
         }
@@ -87,6 +99,7 @@ namespace FlappyBird_Mono.GameStates
                     if(pipePair.X + PIPE_WIDTH < bird.X)
                     {
                         score++;
+                        scoreSound.Play();
                         pipePair.scored = true;
                     }
                 }
@@ -94,6 +107,8 @@ namespace FlappyBird_Mono.GameStates
 
                 if (bird.Collides(pipePair.Upper) || bird.Collides(pipePair.Lower))
                 {
+                    explosionSound.Play();
+                    hurtSound.Play();
                     LoadScoreState();
                 }
 
@@ -109,6 +124,8 @@ namespace FlappyBird_Mono.GameStates
 
             if(bird.Y > GameMain.VIRTUAL_HEIGHT - 15)
             {
+                explosionSound.Play();
+                hurtSound.Play();
                 LoadScoreState();
             }
 

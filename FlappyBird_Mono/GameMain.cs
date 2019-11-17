@@ -4,6 +4,7 @@ using InputManager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using StateManager;
 using System;
 
@@ -34,6 +35,8 @@ namespace FlappyBird_Mono
 
         private Texture2D ground;
         private float groundScroll = 0f;
+
+        private Song music;
 
 
         private const int BACKGROUND_SCROLL_SPEED = 30;
@@ -80,6 +83,9 @@ namespace FlappyBird_Mono
             background = Content.Load<Texture2D>("background");
             ground = Content.Load<Texture2D>("ground");
 
+            music = Content.Load<Song>("marios_way");
+            MediaPlayer.Play(music);
+            MediaPlayer.IsRepeating = true;
         }
 
         protected override void UnloadContent()

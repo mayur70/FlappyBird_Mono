@@ -1,6 +1,7 @@
 ﻿using FlappyBird_Mono.GameStates;
 using InputManager;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -14,13 +15,15 @@ namespace FlappyBird_Mono
         private float x;
         private float y;
         private float dy;
+        private SoundEffect jumpSound;
 
         public float X { get { return x; } }
         public float Y { get { return y; } }
 
-        public Bird(Texture2D image)
+        public Bird(Texture2D image, SoundEffect jumpSound)
         {
             this.image = image;
+            this.jumpSound = jumpSound;
             width = this.image.Width;
             height = this.image.Height;
 
@@ -32,6 +35,7 @@ namespace FlappyBird_Mono
             dy += PlayState.GRAVITY * delta;
             if (InputHandler.IsKeyJustPressed(Keys.Space))
             {
+                jumpSound.Play();
                 dy = PlayState.JUMP_HEIGHT;
             }
 
