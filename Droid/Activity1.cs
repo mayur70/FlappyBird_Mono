@@ -23,6 +23,8 @@ namespace Droid
             base.OnCreate(bundle);
             GameMain g = new GameMain();
             SetContentView((View)g.Services.GetService(typeof(View)));
+            
+            //For Android Fullscreen
             int uiOption = (int)Window.DecorView.SystemUiVisibility;
             uiOption |= (int)SystemUiFlags.Fullscreen;
             uiOption |= (int)SystemUiFlags.HideNavigation;
@@ -31,16 +33,6 @@ namespace Droid
 
             g.Run();
         }
-
-        //public void EnableImmersiveMode()
-        //{
-        //    int uiOptions = (int)(Forms.Context as Activity).Window.DecorView.SystemUiVisibility;
-        //    //uiOptions |= (int)SystemUiFlags.LowProfile;
-        //    uiOptions |= (int)SystemUiFlags.Fullscreen;
-        //    uiOptions |= (int)SystemUiFlags.HideNavigation;
-        //    uiOptions |= (int)SystemUiFlags.ImmersiveSticky;
-        //    (Forms.Context as Activity).Window.DecorView.SystemUiVisibility = (StatusBarVisibility)uiOptions;
-        //}
     }
 }
 
