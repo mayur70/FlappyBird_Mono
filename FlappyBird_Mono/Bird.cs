@@ -6,10 +6,6 @@ namespace FlappyBird_Mono
 {
     public class Bird
     {
-
-        private const int GRAVITY = 20;
-        private const int JUMP_HEIGHT = -5;
-
         private Texture2D image;
         private float width;
         private float height;
@@ -31,10 +27,10 @@ namespace FlappyBird_Mono
 
         public void Update(float delta)
         {
-            dy += GRAVITY * delta;
+            dy += GameMain.GRAVITY * delta;
             if (GameMain.input.WasPressed(Keys.Space))
             {
-                dy = JUMP_HEIGHT;
+                dy = GameMain.JUMP_HEIGHT;
             }
 
             y += dy;

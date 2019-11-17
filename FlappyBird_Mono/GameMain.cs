@@ -16,6 +16,19 @@ namespace FlappyBird_Mono
         public const int VIRTUAL_WIDTH = 512;
         public const int VIRTUAL_HEIGHT = 288;
 
+        public const int GAP_HEIGHT = 90;
+        public const int PIPE_HEIGHT = 288;
+        public const int PIPE_WIDTH = 70;
+        public const int PIPE_SPEED = 60;
+
+        public const int GRAVITY = 20;
+        public const int JUMP_HEIGHT = -4;
+
+        private const int BACKGROUND_SCROLL_SPEED = 30;
+        private const int GROUND_SCROLL_SPEED = 60;
+        private const int BACKGROUND_LOOPING_POINT = 413;
+
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -27,18 +40,15 @@ namespace FlappyBird_Mono
         private Texture2D ground;
         private float groundScroll = 0f;
 
-        private Texture2D pipe;
-
-        private const int BACKGROUND_SCROLL_SPEED = 30;
-        private const int GROUND_SCROLL_SPEED = 60;
-
-        private const int BACKGROUND_LOOPING_POINT = 413;
+        public static Texture2D pipe;
 
         public static IInputHandler input;
 
         private Bird bird;
 
-        private List<Pipe> pipes;
+        private List<PipePair> pipePairs;
+
+        private float lastY = -PIPE_HEIGHT + random.Next(80) + 20;
 
         private float spawnTimer = 0f;
 
@@ -64,12 +74,11 @@ namespace FlappyBird_Mono
             Window.AllowUserResizing = true;
             graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
             graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
-            graphics.ApplyChanges();
             
             Window.Title = "Flappy Bird";
 
             spawnTimer = 0f;
-            pipes = new List<Pipe>();
+            pipePairs = new List<PipePair>();
 
             base.Initialize();
         }
@@ -106,24 +115,27 @@ namespace FlappyBird_Mono
             spawnTimer += delta;
             if (spawnTimer > 2)
             {
+                float y = MathHelper.Max(-PIPE_HEIGHT + 10,
+                        MathHelper.Min(lastY + random.Next(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT));
+                lastY = y;
                 spawnTimer = 0;
-                pipes.Add(new Pipe(pipe));
+                pipePairs.Add(new PipePair(y));
             }
 
             bird.Update(delta);
 
-            List<Pipe> pipesToRemove = new List<Pipe>();
-            foreach (Pipe pipe in pipes)
+            List<PipePair> pipePairsToRemove = new List<PipePair>();
+            foreach (PipePair pipePair in pipePairs)
             {
-                pipe.Update(delta);
-                if (pipe.X < -pipe.Width)
+                pipePair.Update(delta);
+                if (pipePair.remove)
                 {
-                    pipesToRemove.Add(pipe);
+                    pipePairsToRemove.Add(pipePair);
                 }
             }
-            foreach (Pipe pipe in pipesToRemove)
+            foreach (PipePair pipePair in pipePairsToRemove)
             {
-                pipes.Remove(pipe);
+                pipePairs.Remove(pipePair);
             }
 
             base.Update(gameTime);
@@ -145,9 +157,9 @@ namespace FlappyBird_Mono
 
             spriteBatch.Draw(background, new Vector2(-backgroundScroll, 0), Color.White);
 
-            foreach (Pipe pipe in pipes)
+            foreach (PipePair pipePair in pipePairs)
             {
-                pipe.Draw(spriteBatch);
+                pipePair.Draw(spriteBatch);
             }
 
             spriteBatch.Draw(ground, new Vector2(-groundScroll, VIRTUAL_HEIGHT - 16), Color.White);

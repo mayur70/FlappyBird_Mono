@@ -3,39 +3,68 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FlappyBird_Mono
 {
+    public enum PipeOrientation
+    {
+        Top,
+        Bottom
+    }
     public class Pipe
     {
-        private const int PIPE_SCROLL = -60;
         private Texture2D image;
 
         private float x;
-        private float y;
-        private float width;
-        private float height;
+        private readonly float y;
+        private readonly float width;
+        private readonly float height;
+        private PipeOrientation orientation;
 
-        public float X { get { return x; } }
-        public float Y { get { return y; } }
+        public float X 
+        { 
+            get 
+            { 
+                return x; 
+            }
+            set
+            {
+                x = value;
+            }
+        }
+        public float Y {
+            get 
+            {
+                return y; 
+            }
+        }
         public float Width { get { return width; } }
         public float Height { get { return height; } }
-        public Pipe(Texture2D image)
+        public Pipe(PipeOrientation orientation, float y)
         {
-            this.image = image;
+            image = GameMain.pipe;
             x = GameMain.VIRTUAL_WIDTH;
-            y = GameMain.random.Next(
-                    GameMain.VIRTUAL_HEIGHT / 4, 
-                    GameMain.VIRTUAL_HEIGHT - 10);
-            width = this.image.Width;
-            height = this.image.Height;
+            this.y = y;
+            width = image.Width;
+            height = image.Height;
+            this.orientation = orientation;
         }
 
         public void Update(float delta)
         {
-            x += PIPE_SCROLL * delta;
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(image, new Vector2(x, y), Color.White);
+            SpriteEffects spriteEffects = orientation == PipeOrientation.Top ? SpriteEffects.FlipVertically : SpriteEffects.None;
+            spriteBatch.Draw(
+                image, 
+                new Vector2(x,y), 
+                new Rectangle(0, 0, (int)width, (int)height), 
+                Color.White, 
+                0f, 
+                Vector2.Zero,
+                1f,
+                spriteEffects, 
+                0f);
         }
     }
 }
