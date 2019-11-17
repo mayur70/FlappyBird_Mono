@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FlappyBird_Mono.GameStates;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace FlappyBird_Mono
@@ -39,7 +40,7 @@ namespace FlappyBird_Mono
         public float Height { get { return height; } }
         public Pipe(PipeOrientation orientation, float y)
         {
-            image = GameMain.pipe;
+            image = PlayState.pipe;
             x = GameMain.VIRTUAL_WIDTH;
             this.y = y;
             width = image.Width;

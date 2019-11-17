@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FlappyBird_Mono.GameStates;
+using InputManager;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -27,10 +29,10 @@ namespace FlappyBird_Mono
 
         public void Update(float delta)
         {
-            dy += GameMain.GRAVITY * delta;
-            if (GameMain.input.WasPressed(Keys.Space))
+            dy += PlayState.GRAVITY * delta;
+            if (InputHandler.IsKeyJustPressed(Keys.Space))
             {
-                dy = GameMain.JUMP_HEIGHT;
+                dy = PlayState.JUMP_HEIGHT;
             }
 
             y += dy;
@@ -43,9 +45,9 @@ namespace FlappyBird_Mono
 
         public bool Collides(Pipe pipe)
         {
-            if ((x + 2 + width - 4) >= pipe.X && x + 2 <= pipe.X + GameMain.PIPE_WIDTH)
+            if ((x + 2 + width - 4) >= pipe.X && x + 2 <= pipe.X + PlayState.PIPE_WIDTH)
             {
-                if ((y + 2 + height - 4) >= pipe.Y && y + 2 <= pipe.Y + GameMain.PIPE_HEIGHT)
+                if ((y + 2 + height - 4) >= pipe.Y && y + 2 <= pipe.Y + PlayState.PIPE_HEIGHT)
                 {
                     return true;
                 }

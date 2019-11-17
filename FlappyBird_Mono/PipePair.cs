@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using FlappyBird_Mono.GameStates;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace FlappyBird_Mono
 {
@@ -18,14 +19,14 @@ namespace FlappyBird_Mono
             remove = false;
 
             Upper = new Pipe(PipeOrientation.Top, this.y);
-            Lower = new Pipe(PipeOrientation.Bottom, this.y + GameMain.PIPE_HEIGHT + GameMain.GAP_HEIGHT);
+            Lower = new Pipe(PipeOrientation.Bottom, this.y + PlayState.PIPE_HEIGHT + PlayState.GAP_HEIGHT);
         }
 
         public void Update(float delta)
         {
-            if (x > -GameMain.PIPE_WIDTH)
+            if (x > -PlayState.PIPE_WIDTH)
             {
-                x -= GameMain.PIPE_SPEED * delta;
+                x -= PlayState.PIPE_SPEED * delta;
                 Upper.X = x;
                 Lower.X = x;
             }
